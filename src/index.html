@@ -646,14 +646,37 @@
         c-0.2,0.1-0.2,0.3-0.2,0.6v5.5H206.4z" />
             </g>
         </svg>
-        <ul>
-            <li ng-repeat="guest in rsvp.guests">
-                <h2>{{ guest.name }}</h2>
-                <span><input type="radio" ng-model="guest.attending" name="attending_{{ guest.uuid }}" ng-value="true" /> is delighted to attend</span>
-                <span><input type="radio" ng-model="guest.attending" name="attending_{{ guest.uuid }}" ng-value="false" /> regretfully declines</span>
-            </li>
-        </ul>
-        <button class="save" ng-click="save()">Save</button>
+        <div ng-if="input">
+            <ul>
+                <li>
+                    <span>Enter your guest code from bottom right of the RSVP card:</span>
+                    <input type="text" ng-model="guestCode" />
+
+                    <button class="save" ng-click="submitGuestCode(guestCode)">Submit</button>
+                </li>
+            </ul>
+        </div>
+        <div ng-if="!message &amp;&amp; !input">
+            <ul>
+                <li ng-repeat="guest in rsvp.guests">
+                    <h2>{{ guest.name }}</h2>
+                    <span><input type="radio" ng-model="guest.isAttending" name="attending_{{ guest.uuid }}" id="attending_{{ guest.uuid }}_yes" ng-value="true" /> <label for="attending_{{ guest.uuid }}_yes">is delighted to attend</label></span>
+                    <span><input type="radio" ng-model="guest.isAttending" name="attending_{{ guest.uuid }}" id="attending_{{ guest.uuid }}_no" ng-value="false" /> <label for="attending_{{ guest.uuid }}_no">regretfully declines</label></span>
+                </li>
+                <li ng-if="!rsvp">
+                    <span>No one has been assigned the specified guest code.</span>
+                </li>
+            </ul>
+            <button class="save" ng-click="save()" ng-if="rsvp">Save</button>
+        </div>
+        <div ng-if="message">
+            <ul>
+                <li>
+                    <h2>Thanks!</h2>
+                    <span>We're looking forward to celebrating our wedding with you!</span>
+                </li>
+            </ul>
+        </div>
     </div>
     <script src="/repondez.js"></script>
 </body>
